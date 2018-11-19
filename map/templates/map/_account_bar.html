@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load account_tags %}
+
+<ul class="nav navbar-nav pull-right navigation">
+    {% if request.user.is_authenticated %}
+        <p class="navbar-text">
+           <a href="{% url 'user_redr' %}" class="user"><i class="fa fa-user"></i> {% user_display request.user %} </a>
+        </p>
+        <li>
+            <a href="/bike-json/{{ user.id }}" download="map.json" class="download_json"><i class="fa fa-arrow-circle-o-down"></i> {% trans "Export Zones" %}</a>
+        </li>
+        <li>
+            <a href="#" class="lost"><i class="fa fa-map-marker"></i> {% trans "Reset View" %} </a>
+        </li>
+        {% if request.user.is_staff %}
+        <li>
+            <a href="{% url 'tag_form' %}"><i class="fa fa-plus-circle"></i> {% trans "Add Tags" %}</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {% trans "View Maps" %}&nbsp;<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'view_all_map' %}"><i class="fa fa-globe"></i> {% trans "All" %}</a>
+                </li>
+
+                {% for user in context.users %}
+                <li>
+                    <a href="{% url 'view_user_map' user.id %}"><i class="fa fa-user"></i> {{ user.username }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {% trans "View Zones" %}&nbsp;<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'view_all_zones_list' %}"><i class="fa fa-globe"></i> {% trans "All" %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'view_user_zones_list' user.id %}"><i class="fa fa-user"></i> My Zones</a>
+                </li>
+
+            </ul>
+        </li>
+        {% endif %}
+        <li>
+            <a href="{% url 'account_settings' %}"><i class="fa fa-cog"></i> {% trans "Settings" %}</a>
+        </li>
+        {% if request.user.is_staff %}
+        <li>
+            <a href="/all-bike-json/" download="map.json" class="download_all_json"><i class="fa fa-long-arrow-down"></i> {% trans "Export All Zones" %}</a>
+        </li>
+        {% endif %}
+        <li>
+            <a id="account_logout" href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> {% trans "Log out" %}</a>
+        </li>
+    {% else %}
+        <li><a href="{% url 'account_login' %}">{% trans "Log in" %}</a></li>
+        <li><a href="{% url 'account_signup' %}">{% trans "Sign up" %}</a></li>
+    {% endif %}
+</ul>
+
+<form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">
+    {% csrf_token %}
+</form>

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body_base %}
+ <div class="container container-map">
+        
+        <h3 class="text-center">{% blocktrans %}Sonic Bike Mapping{% endblocktrans %}</h3>
+
+        <div class="row">
+        	<div class="col-lg-6">
+	        	<h3>{{context.title}}</h3>
+	        </div>
+	    </div>
+
+	     <div class="row">
+        	<div class="col-lg-6">
+        		<ul>
+        		{% for zone in context.zones %}
+        			<li><span style="color: {{zone.colour}}">{% if zone.name and zone.name.strip %}{{ zone.name }}{% else %} No Name Yet {% endif %}</span> <small> - submitted by <i class="fa fa-user"></i><em> {{ zone.author }}</em></small><br/>
+        			Latitude: <em>{{ zone.geom.centroid.x}}</em> &nbsp; Longitude: <em>{{ zone.geom.centroid.y}}</em><br/>
+    				{% if zone.zonetag.count > 0 %}
+    				<ul><i class="fa fa-tag"></i> Parameters
+    					{% for z in zone.zonetag.all %}
+    					{% if z.tag.name and z.tag.name.strip %} <li>{{ z.tag }}</li> {% endif %}
+    					{% endfor %}
+        			</ul>
+        			{% else %}
+        			<ul>
+	        			<li><i class="fa fa-tag"></i> No Parameters Yet</li>
+	        		</ul>
+        			{% endif %}
+        			{% if user.id == zone.author.id %}
+        			<a href="" style="color: {{zone.colour}}"><i class="fa fa-pencil-square-o"></i> Edit Zone</a></a>
+        			{% endif %}
+        			
+        			</li><br/>
+        		{% endfor %}
+        		</ul>
+        	</div>
+        </div>
+</div>
+
+{% endblock %}

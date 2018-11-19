@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block body_base %}
+    <div class="container container-map">
+        
+        <div class="row">
+        	<div class="col-lg-6">
+	        	<h3>Add a new Tag</h3>
+	        </div>
+	    </div>
+
+	    <div class="row">
+        	<div class="col-lg-6">
+		    <form action="/tag-form/" method="post">
+			    {% csrf_token %}
+			    {{ form }}
+			    <input type="submit" value="Submit" />
+			</form>
+			</div>
+		</div>
+
+		<div class="row">
+			<hr/>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-6">
+				<h4>Existing Tags</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="tag-list">
+				<ul>
+					{% if tags %}
+					{% for tag in tags %}
+						<li><strong>{{ tag.name }}</strong>: <i>{{ tag.description }}</i> <a href="/delete/tag/{{ tag.id }}"><span class="fa fa-trash-o"></span></a></li>
+						{% endfor %}
+					{% else %}
+						<em> No Tags Yet </em>
+					{% endif %}
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script>
+    	current_user = '{{user.id}}';
+    </script>
+
+
+
+{% endblock %}

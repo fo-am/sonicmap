@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body_base %}
+
+<div class="container container-map">
+  <div id="map" style="height:500px;"></div>
+
+  <script>do_leaflet_edit({{ zone.id }});</script>  
+</div>
+
+<button class="save_map single_zone"><span class="fa fa-floppy-o"></span> Save Zone</button>
+<a href="/delete/zone/{{zone.id}}"><button class="delete_zone"><span class="fa fa-trash-o"></span> Delete Zone</button></a>
+
+
+<div id="zone_meta" class="panel panel-default">
+  <div class="panel-body">
+    <span class="fa fa-pencil-square-o"></span>&nbsp;<strong>Zone Name: </strong> <input id="name" name="name" value="{{zone.name}}"/><br/>
+    <hr/>
+                <i class="fa fa-eyedropper"></i>&nbsp;<strong>Zone Colour: </strong><input type="color" id="colour" name="colour" value="{{zone.colour}}"/> <i class="fa fa-times set_default"></i>
+                <hr/>
+
+                <button id ="zone_toggle"><i class="fa fa-expand"></i></i> Enable Ghost</button>
+
+                <hr/>
+                {{ context }}
+                
+                <!-- <span class="fa fa-pencil-square-o"></span>&nbsp;<strong>Zone Description: </strong> <input id="description" name="description" value="{{zone.description}}"><br/> -->
+                {% if tags %}
+                <span class="fa fa-tags"></span>&nbsp;<strong> Add Tags</strong><br/>
+                <ul>
+                 {% for tag in tags %}
+                    <li>{% if tag.alias and tag.alias.strip %}{{ tag.alias }}{% else %}{{ tag.name }}{% endif %} <input type="checkbox" name="{{tag.id}}"></li>
+                 {% endfor %}
+                </ul>
+                {% endif %}
+
+
+            </div>
+        </div>
+
+        <div class="shapes-saved alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Zone Saved
+        </div>
+        <div class="shapes-failed alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Error Saving Zone
+        </div>
+        <input class="user_id" value='{{object.author_id}}'/>
+         <script>
+        current_user = '{{user.id}}';
+        c_longitude = '{{longitude}}';
+        c_latitude = '{{latitude}}';
+        c_zoom = '{{zoom}}';
+        c_ghost = '{{ghost}}';
+
+        console.log(c_ghost)
+        </script>
+
+{% endblock %}

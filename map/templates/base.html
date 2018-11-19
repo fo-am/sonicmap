@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load i18n %}
+
+<html lang="en">
+  <head>
+    <title>sonic maps</title>
+  </head>
+  <body>
+    <header>
+      {% include "map/_account_bar.html" %}
+    </header>
+    <link href="/media/css/site.css" rel="stylesheet"> 
+    <link href="/media/css/styles.css" rel="stylesheet"> 
+    <link href="/media/css/leaflet.css" rel="stylesheet">
+    <link href="/media/css/leaflet.draw.css" rel="stylesheet">
+    <script src="/media/js/jquery-1.11.1.min.js"></script>
+    <script src="/media/js/leaflet.js"></script>
+    <script src="/media/js/leaflet.draw.js"></script>
+    <script src="/media/js/sonic_bike.js"></script>
+    <div class="main">
+      {% block body_base %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
+
+

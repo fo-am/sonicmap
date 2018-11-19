@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body_base %}
+
+<div class="container container-map">
+  <div id="map" style="height:500px;"></div>
+  {% if request.user.is_authenticated %}
+  <script>do_leaflet_view();</script>
+  {% else %}
+  <script>do_leaflet_view();</script>
+  {% endif %}
+
+</div>
+<button class="save_map"><span class="fa fa-floppy-o"></span> Save Zones</button>
+
+
+<div class="shapes-saved alert alert-success alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  Shapes Saved
+</div>
+<div class="shapes-failed alert alert-danger alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  Error Saving Shape
+</div>
+
+<div id="zone_list" class="panel panel-default">
+  <div class="panel-body">
+    <h4>Zones</h4>
+    <hr/>
+    {% if context.user_page %}
+    <a href=""><i class="fa fa-eye"></i> View All My Zones</a> -->
+    {% else %}								 
+    <a href=""><i class="fa fa-eye"></i> View All Zones</a> -->
+    {% endif %}
+    <hr/>
+    {% for zone in context.zones %}
+    <span class="zone-link-{{zone.id}}">{% if zone.author == request.user %}<i class="fa fa-pencil" style="color: {{zone.colour}}"></i><a href="/zone/{{zone.id}}" style="color: {{zone.colour}}"> {% else %}<i style="color: {{zone.colour}}"></i><a href="#" style="color: {{zone.colour}}"> {% endif %}{% if zone.name %}{{ zone.name }}{% else %} <em> No Name Yet </em>{% endif %}</span></a><br/>
+    <p class="zone-tags">{% for z in zone.zonetag.all %}<small><i class="fa fa-tag"></i> {{ z.tag }} &nbsp;</small>{% endfor %}</p><br/>
+    {% endfor %}
+
+  </div>
+</div>
+
+<input class="user_id" value='{{context.user}}'/>
+
+<script>
+  current_user = '{{user.id}}'
+  c_longitude = '{{context.longitude}}';
+  c_latitude = '{{context.latitude}}';
+  c_zoom = '{{context.zoom}}';
+  c_ghost = '{{ghost}}';
+
+</script>
+
+{% endblock %}

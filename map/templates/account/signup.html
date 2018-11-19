@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% load account_tags %}
+
+{% block body_base %}
+ <form id="signup_form" method="post" action="{% url "account_signup" %}" autocapitalize="off" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+        <legend>{% trans "Sign up" %}</legend>
+        {% csrf_token %}
+        {{ form }}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="form-actions">
+            <button>{% trans "Sign up" %}</button>
+        </div>
+        <p class="login-signup">
+            {% trans "Already have an account?" %}
+            <a href="{% url 'account_login' %}">{% trans "Log in" %}</a>
+        </p>
+</form>
+{% endblock %}
