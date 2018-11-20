@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+var default_lat = 50.187954; 
+var default_lon = -5.424446;
+var default_zoom = 15;
+
 function main_map_init_anon (map, options) {
     //If anon
     $('.save_map').hide();
@@ -286,7 +290,7 @@ function setup_map(map, options) {
     });
 
     $('.lost').click(function() {
-    	map.setView(new L.LatLng(51.542478,  -0.056413300000031086), 18);
+    	map.setView(new L.LatLng(default_lat, default_lon), default_zoom);
     })
 
     map.on('move', function() {
@@ -438,7 +442,7 @@ function send_data() {
 
 function do_leaflet_view() {
   $(document).ready(function() {
-  var map = L.map('map').setView([51.505, -0.09], 13);
+  var map = L.map('map').setView([default_lat, default_lon], default_zoom);
      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
      }).addTo(map);
@@ -450,7 +454,7 @@ function do_leaflet_view() {
 
 function do_leaflet_edit(zone_id) {
   $(document).ready(function() {
-  var map = L.map('map', {drawControl: true}).setView([51.505, -0.09], 13);
+  var map = L.map('map', {drawControl: true}).setView([default_lat, default_lon], default_zoom);
      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
      }).addTo(map);

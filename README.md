@@ -17,4 +17,3 @@ enable postgis on database:
 
     \connect sonicmap
     CREATE EXTENSION postgis;
-
