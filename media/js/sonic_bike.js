@@ -46,14 +46,14 @@ function main_map_init_view (map, options) {
 	    var geoJsonLayer = L.geoJson(data).addTo(map);
 	    popup = new L.Popup();
 	    
-	    console.log(data.features);
+	    //console.log(data.features);
 	    
-	    $(data.features).each(function(i, d) {
-		console.log(d.geometry.coordinates[0][0]);
-	    });
+	    //$(data.features).each(function(i, d) {
+	//	console.log(d.geometry.coordinates[0][0]);
+	 //   });
 	    
 	    geoJsonLayer.eachLayer(function(layer) {
-		console.log(layer.feature.geometry);
+		//console.log(layer.feature.geometry);
 		geo_colour = layer.feature.properties.color;
 		
 		layer.on('click', function() {
@@ -123,7 +123,7 @@ function main_map_init_edit(map, options) {
 	url: "/json/" + userid,
 	success: function(data){
 
-	    console.log(data.features);
+	    //console.log(data.features);
 
             // loop over each zone
             data.features.forEach(function(zone) {
@@ -243,19 +243,19 @@ function setup_map(map, options) {
 	}
     });
 
-    console.log("adding draw control");
+    //console.log("adding draw control");
     map.addControl(drawControl);
 
     map.on('draw:created', function (e) {
 	var type = e.layerType,
 	layer = e.layer;
 	drawnItems.addLayer(layer);
-	console.log(drawnItems.toGeoJSON());
-	console.log("added draw control");
+	//console.log(drawnItems.toGeoJSON());
+	//console.log("added draw control");
     });
 
     if(editing===true) {
-	console.log("unhiding stuff");
+	//console.log("unhiding stuff");
 	$('.leaflet-draw').addClass('hide');
 	// Get toggling right or move around, then enable editing of existing ghost zones (y) fix zone savin' maybe revert
 	$( "#zone_toggle, li:contains('Ghost') input:not(:checked)" ).click(function(e) {
@@ -337,7 +337,7 @@ function saveShapes(layer) {
 	    ghost = layer.toGeoJSON();
 
 	    if (ghost["features"][0] === undefined) {
-		console.log("Undefined")
+		//console.log("Undefined")
 	    } else {
 		if (ghost[0] !== null || ghost[0] != undefined) {
 		    // Adding colour parameters etc just for clarity
@@ -349,7 +349,7 @@ function saveShapes(layer) {
 		    ghost_json = JSON.stringify(ghost);
 
 		} else {
-		    console.log("Null")
+		    //console.log("Null")
 		}
 	    }
 	}
@@ -441,28 +441,98 @@ function send_data() {
 ///////////////////////////////////////////////////////////////
 
 function do_leaflet_view() {
-  $(document).ready(function() {
-  var map = L.map('map').setView([default_lat, default_lon], default_zoom);
-     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-     }).addTo(map);
-  console.log("viewing only...");
-  editing=false;
-  main_map_init_view(map); 
-  });
+    $(document).ready(function() {
+	var map = L.map('map').setView([default_lat, default_lon], default_zoom);
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+	//console.log("viewing only...");
+	editing=false;
+	main_map_init_view(map); 
+
+	add_geojson(map,0.2,"hayle-01/temp_points.geojson");	
+	add_geojson(map,1,"hayle-lake/temp_points.geojson");	
+
+    });
 }
 
 function do_leaflet_edit(zone_id) {
-  $(document).ready(function() {
-  var map = L.map('map', {drawControl: true}).setView([default_lat, default_lon], default_zoom);
-     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-     }).addTo(map);
+    $(document).ready(function() {
+	var map = L.map('map', {drawControl: true}).setView([default_lat, default_lon], default_zoom);
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+	
+	editing=true;
+	//console.log("editing zone id:"+zone_id);
+	set_editing_zone(zone_id);
+	main_map_init_edit(map); 
+	
+    });
+}
 
-  editing=true;
-  console.log("editing zone id:"+zone_id);
-  set_editing_zone(zone_id);
-  main_map_init_edit(map); 
+function add_geojson(map,max_expand,filename) {
+/*    var mydata = $.ajax({
+        url:"/media/geojson/"+filename,
+        dataType: "json",
+        success: function(data) {
+	    console.log("GeoJSON data successfully loaded.")
 
-  });
+	    myarray = []
+	    min = 9999;
+	    max = 0;
+
+            //grab the xyz data from the array
+            data.features.forEach(function(feature){
+		point_array = []
+		point_array.push(feature.geometry.coordinates[1])
+		point_array.push(feature.geometry.coordinates[0])
+		if (feature.properties.temp<min) min=feature.properties.temp;
+		if (feature.properties.temp>max) max=feature.properties.temp;
+		point_array.push(feature.properties.temp)
+		myarray.push(point_array)
+            });
+
+	    max=min+max_expand;
+
+	    console.log(min);
+	    console.log(max);
+	    
+
+	    //using an array with xyz, plot the hotline
+	    var hotlineLayer = L.hotline(myarray, {
+		min: min,
+		max: max,
+		//viridis colour palette
+		palette: {
+		    0.0: '#440154FF',
+		    0.05: '#481567FF',
+		    0.1: '#482677FF',
+		    0.15: '#453781FF',
+		    0.2: '#404788FF',
+		    0.25: '#39568CFF',
+		    0.3: '#33638DFF',
+		    0.35: '#2D708EFF',
+		    0.4: '#287D8EFF',
+		    0.45: '#238A8DFF',
+		    0.5: '#1F968BFF',
+		    0.55: '#20A387FF',
+		    0.6: '#29AF7FFF',
+		    0.65: '#3CBB75FF',
+		    0.7: '#55C667FF',
+		    0.75: '#73D055FF',
+		    0.8: '#95D840FF',
+		    0.85: '#B8DE29FF',
+		    0.9: '#DCE319FF',
+		    1: '#FDE725FF',
+		},
+		weight: 4.5,
+		outlineColor: '#8c8c8c',
+		outlineWidth: 1
+	    }).addTo(map);
+
+
+	}
+    });
+*/    
 }
