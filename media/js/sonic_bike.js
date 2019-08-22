@@ -13,8 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-var default_lat = 50.187954; 
-var default_lon = -5.424446;
+// penryn
+var default_lat = 50.169124; 
+var default_lon = -5.099244;
+
+// hayle
+//var default_lat = 50.187954; 
+//var default_lon = -5.424446;
 var default_zoom = 15;
 
 function main_map_init_anon (map, options) {
@@ -443,9 +448,16 @@ function send_data() {
 function do_leaflet_view() {
     $(document).ready(function() {
 	var map = L.map('map').setView([default_lat, default_lon], default_zoom);
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+
+	L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+	    maxZoom: 20,
+	    subdomains:['mt0','mt1','mt2','mt3']
 	}).addTo(map);
+
+	//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        //    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	//}).addTo(map);
+	
 	//console.log("viewing only...");
 	editing=false;
 	main_map_init_view(map); 
@@ -459,9 +471,16 @@ function do_leaflet_view() {
 function do_leaflet_edit(zone_id) {
     $(document).ready(function() {
 	var map = L.map('map', {drawControl: true}).setView([default_lat, default_lon], default_zoom);
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+
+	L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+	    maxZoom: 20,
+	    subdomains:['mt0','mt1','mt2','mt3']
 	}).addTo(map);
+
+	
+//	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+//            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+//	}).addTo(map);
 	
 	editing=true;
 	//console.log("editing zone id:"+zone_id);
