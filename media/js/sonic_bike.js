@@ -449,14 +449,15 @@ function do_leaflet_view() {
     $(document).ready(function() {
 	var map = L.map('map').setView([default_lat, default_lon], default_zoom);
 
-	L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-	    maxZoom: 20,
-	    subdomains:['mt0','mt1','mt2','mt3']
-	}).addTo(map);
-
-	//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        //    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	//L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+	//    maxZoom: 20,
+	//    subdomains:['mt0','mt1','mt2','mt3']
 	//}).addTo(map);
+
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	    maxZoom: 20,
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
 	
 	//console.log("viewing only...");
 	editing=false;
@@ -472,15 +473,16 @@ function do_leaflet_edit(zone_id) {
     $(document).ready(function() {
 	var map = L.map('map', {drawControl: true}).setView([default_lat, default_lon], default_zoom);
 
-	L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-	    maxZoom: 20,
-	    subdomains:['mt0','mt1','mt2','mt3']
-	}).addTo(map);
+	//L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+	//    maxZoom: 20,
+	//    subdomains:['mt0','mt1','mt2','mt3']
+	//}).addTo(map);
 
 	
-//	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-//            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-//	}).addTo(map);
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	    maxZoom: 20,
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
 	
 	editing=true;
 	//console.log("editing zone id:"+zone_id);

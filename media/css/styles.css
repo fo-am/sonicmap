@@ -87,8 +87,8 @@
 #zone_list,
 #zone_meta {
 	position: absolute;
-	width: 200px;
-	height: 300px;
+	width: 300px;
+	height: 500px;
 	overflow: scroll;
 	top: 150px;
 	right: 25px;

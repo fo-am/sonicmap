@@ -390,7 +390,11 @@ def get_bike_json(request):
         for i, zone in enumerate(Zone.objects.all()):
                 bike_map["zones"].append(export_zone(zone));
 
-        return HttpResponse(json.dumps([bike_map]), content_type='text/json')
+        response = HttpResponse(json.dumps([bike_map]), content_type='text/json')
+        response['Content-Disposition'] = 'attachment; filename="map.json"'
+        return response
+
+
 
 def get_bike_json_user(request, user):
         # export to format expected by swamp bike system
@@ -402,4 +406,7 @@ def get_bike_json_user(request, user):
                 bike_map["zones"].append(export_zone(zone));
 
 
-        return HttpResponse(json.dumps([bike_map]), content_type='text/json')
+        response = HttpResponse(json.dumps([bike_map]), content_type='text/json')
+        response['Content-Disposition'] = 'attachment; filename="map.json"'
+        return response
+
